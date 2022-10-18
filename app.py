@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 
-client = MongoClient('mongodb+srv://test:sparta@cluster0.roiwo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://sparta:sparta@cluster0.7din7v3.mongodb.net/?retryWrites=true&w=majority')
 
 db = client.dbsparta
 app = Flask(__name__)
@@ -24,7 +24,7 @@ def bucket_post():
         'done': 0,
     }
     db.bucket.insert_one(doc)
-    return jsonify({'msg': 'data saved!'})
+    return jsonify()
 
 @app.route("/bucket/done", methods=["POST"])
 def bucket_done():
@@ -33,13 +33,22 @@ def bucket_done():
         {'num': int(num_receive)},
         {'$set': {'done': 1}}
     )
-    return jsonify({'msg': 'update done!'})
+    return jsonify()
+
+@app.route("/bucket//cancel", methods=["POST"])
+def cancel_bucket():
+    num_receive = request.form['num_give']
+    db.bucket.update_one(
+        {'num': int(num_receive)},
+        {'$set': {'done': 0}}
+    )
+    return jsonify()
 
 @app.route("/delete", methods=["POST"])
 def delete_bucket():
     num_receive = request.form['num_give']
     db.bucket.delete_one({'num': int(num_receive)})
-    return jsonify({'msg': 'delete done!'})
+    return jsonify()
 
 @app.route("/bucket", methods=["GET"])
 def bucket_get():

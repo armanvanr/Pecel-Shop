@@ -5,20 +5,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://cdn4.iconfinder.com/data/icons/food-and-equipment-outline/32/dish-512.png">
 
-    <link href="bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&amp;display=swap" rel="stylesheet">
 
-    <title>Pecel Shop</title>
+    <title>Bucket List</title>
 
     <style>
         * {
@@ -27,10 +24,11 @@
 
         .mypic {
             width: 100%;
-            height: 200px;
+            height: 350px;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://t3.ftcdn.net/jpg/02/13/44/22/360_F_213442298_KVPfVWFT7kKnBYtK3tfPeZUor51BQaoa.jpg');
-            background-position: center;
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+            url('https://images.ctfassets.net/cnu0m8re1exe/52MFJVkqEMCiNdAVqYBHZ/7b26a05b4a8cddf7a9f70d5f168f90de/shutterstock_1520037971.jpg');
+            background-position: center 60%;
             background-size: cover;
 
             color: white;
@@ -86,53 +84,69 @@
             text-decoration: line-through
         }
     </style>
-    <script>
+</head>
+
+<body style="background-color:#00031b">
+    <div class="mypic">
+        <h1>My Bucketlist</h1>
+        <p>I write here downside for my bucket-list in my future. Hope this is will come true :)</p>
+    </div>
+    <div class="mybox" style="background-color:white">
+        <div class="mybucket">
+            <input id="bucket" class="form-control" type="text" placeholder="Enter your bucket list item here">
+            <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">Save this new wishlist</button>
+        </div>
+    </div>
+    <div class="mybox" id="bucket-list" style="background-color:white; min-height: auto;">
+    </div>
+</body>
+
+<script>
         $(document).ready(function () {
             show_bucket();
         });
         function show_bucket() {
-            $('#bucket-list').empty();
-        $.ajax({
-            type: "GET",
-        url: "/bucket",
-        data: { },
-        success: function (response) {
-            let rows = response['buckets'];
-        for (let i = 0; i < rows.length; i++) {
-            let bucket = rows[i]['bucket'];
-        let num = rows[i]['num'];
-        let done = rows[i]['done'];
-        let temp_html = '';
-        if (done === 0) {
-            temp_html = `
-        <li>
-            <h2>✅ ${bucket}</h2>
-            <button onclick="done_bucket(${num})" type="button" class="btn btn-outline-primary">Done!</button>
-            <button onclick="delete_bucket(${num})" type="button" class="btn btn-outline-danger">Delete!</button>
-        </li>
+            $.ajax({
+                type: "GET",
+                url: "/bucket",
+                data: {},
+                success: function (response) {
+                    $('#bucket-list').empty();
+                    let rows = response['buckets'];
+                    for (let i = 0; i < rows.length; i++) {
+                        let bucket = rows[i]['bucket'];
+                        let num = rows[i]['num'];
+                        let done = rows[i]['done'];
+                        let temp_html = '';
+                        if (done === 0) {
+                            temp_html = `
+                            <li>
+                                <h2>✅ ${bucket}</h2>
+                                <button onclick="done_bucket(${num})" type="button" class="btn btn-outline-primary">Mark as complete</button>
+                            </li>
                             `;
                         } else {
-            temp_html = `
-        <li>
-            <h2 class="done">✅ ${bucket}</h2>
-            <button onclick="delete_bucket(${num})" type="button" class="btn btn-outline-danger">Delete!</button>
-        </li>
+                            temp_html = `
+                            <li>
+                                <h2 class="done">✅ ${bucket}</h2>
+                                <button onclick="cancel_bucket(${num})" type="button" class="btn btn-outline-danger">Cancel</button>
+                            </li>
                             `;
                         }
-        $('#bucket-list').append(temp_html);
+                        $('#bucket-list').append(temp_html);
                     }
                 }
             });
         }
         function save_bucket() {
             let bucket = $('#bucket').val();
-        $.ajax({
-            type: "POST",
-        url: "/bucket",
-        data: {bucket_give: bucket},
-        success: function (response) {
-            alert(response["msg"])
-                    window.location.reload();
+            $.ajax({
+                type: "POST",
+                url: "/bucket",
+                data: {bucket_give: bucket},
+                success: function (response) {
+                    $('#bucket').val(null);
+                    show_bucket();
                 }
             });
         }
@@ -142,8 +156,17 @@
                 url: "/bucket/done",
                 data: { num_give: num },
                 success: function (response) {
-                    alert(response["msg"]);
-                    window.location.reload();
+                    show_bucket();
+                }
+            });
+        }
+        function cancel_bucket(num) {
+            $.ajax({
+                type: "POST",
+                url: "/bucket/cancel",
+                data: { num_give: num },
+                success: function (response) {
+                    show_bucket();
                 }
             });
         }
@@ -153,38 +176,10 @@
                 url: "/delete",
                 data: { num_give: num },
                 success: function (response) {
-                    alert(response["msg"]);
-                    window.location.reload();
+                    show_bucket();
                 }
             });
         }
-    </script>
-</head>
-
-<body>
-    <div class="mypic">
-        <h1>Pecel Shop</h1>
-    </div>
-    <div class="mybox">
-        <div class="mybucket">
-            <input id="bucket" class="form-control" type="text" placeholder="Enter your order here!">
-            <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">Save</button>
-        </div>
-    </div>
-    <div class="mybox" id="bucket-list">
-        <li>
-            <h2>✅ Bucket list number 1</h2>
-            <button onclick="done_bucket(5)" type="button" class="btn btn-outline-primary">Done!</button>
-        </li>
-        <li>
-            <h2>✅ Bucket list number 2</h2>
-            <button onclick="done_bucket(5)" type="button" class="btn btn-outline-primary">Done!</button>
-        </li>
-        <li>
-            <h2>✅ Bucket list number 3</h2>
-            <button onclick="done_bucket(5)" type="button" class="btn btn-outline-primary">Done!</button>
-        </li>
-    </div>
-</body>
+</script>
 
 </html>
