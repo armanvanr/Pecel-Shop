@@ -1,0 +1,6 @@
+Link Deploy Mini Project | Sari Eka
+
+Mars : https://mars-1010.herokuapp.com/
+Movie : https://movies-fav.herokuapp.com/
+Bucket : https://my-bucketdream.herokuapp.com/
+Fanbook : https://skz-fanbook.herokuapp.com/
