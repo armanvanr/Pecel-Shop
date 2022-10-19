@@ -100,18 +100,22 @@
         <p>"Laughter is brightest in the place where food is good." - Irish Proverb</p>
     </div>
     <div class="mybox" style="background-color:white">
-        <div class="mybucket mr-3">
-            <!-- <input id="bucket" class="form-control" type="text" placeholder="Enter your order here!"> -->
-            <select class="form-select mr-3" id="bucket">
-                <option selected>Select your food item</option>
-                <option value="Rice">Rice</option>
-                <option value="Lontong">Lontong</option>
-                <option value="Pecel">Pecel</option>
-                <option value="Fried Tempe">Fried Tempe</option>
-                <option value="Fried Tofu">Fried Tofu</option>
-                <option value="Fried Chicken">Fried Chicken</option>
-            </select>
-            <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">Make order</button>
+        <div class="row">
+            <div class="mybucket col-9">
+                <!-- <input id="bucket" class="form-control" type="text" placeholder="Enter your order here!"> -->
+                <select class="form-select" id="bucket">
+                    <option selected>Select your food item</option>
+                    <option value="Rice">Rice</option>
+                    <option value="Lontong">Lontong</option>
+                    <option value="Pecel">Pecel</option>
+                    <option value="Fried Tempe">Fried Tempe</option>
+                    <option value="Fried Tofu">Fried Tofu</option>
+                    <option value="Fried Chicken">Fried Chicken</option>
+                </select>
+            </div>
+            <div class="col-3">    
+                <button onclick="save_bucket()" type="button" class="btn btn-outline-primary float-end">Make order</button>
+            </div>
         </div>
     </div>
     <div class="mybox" id="bucket-list" style="background-color:white; min-height: auto;">
@@ -138,8 +142,10 @@
                         if (done === 0) {
                             temp_html = `
                             <li>
-                                <h2>✅ ${bucket}</h2>
-                                <button onclick="done_bucket(${num})" type="button" class="btn btn-outline-primary">Mark as complete</button>
+                                <h2>📌 ${bucket}</h2>
+                                <button onclick="done_bucket(${num})" type="button" class="btn btn-outline-danger">-</button>
+                                <h5 class="mx-3">1</h5>
+                                <button onclick="done_bucket(${num})" type="button" class="btn btn-outline-primary">+</button>
                             </li>
                             `;
                         } else {
