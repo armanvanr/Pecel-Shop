@@ -15,7 +15,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&amp;display=swap" rel="stylesheet">
 
-    <title>Bucket List</title>
+    <title>Pecel Shop</title>
 
     <style>
         * {
@@ -59,14 +59,14 @@
             margin: 20px auto;
         }
 
-        .mybucket {
+        .mypecel {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
         }
 
-        .mybucket>input {
+        .mypecel>input {
             width: 70%;
         }
 
@@ -101,9 +101,9 @@
     </div>
     <div class="mybox" style="background-color:white">
         <div class="row">
-            <div class="mybucket col-9">
-                <!-- <input id="bucket" class="form-control" type="text" placeholder="Enter your order here!"> -->
-                <select class="form-select" id="bucket">
+            <div class="mypecel col-9">
+                <!-- <input id="pecel" class="form-control" type="text" placeholder="Enter your order here!"> -->
+                <select class="form-select" id="pecel">
                     <option selected>Select your food item</option>
                     <option value="Rice">Rice</option>
                     <option value="Lontong">Lontong</option>
@@ -114,92 +114,93 @@
                 </select>
             </div>
             <div class="col-3">    
-                <button onclick="save_bucket()" type="button" class="btn btn-outline-primary float-end">Make order</button>
+                <button onclick="save_pecel()" type="button" class="btn btn-outline-primary float-end">Make order</button>
             </div>
         </div>
     </div>
-    <div class="mybox" id="bucket-list" style="background-color:white; min-height: auto;">
+    <div class="mybox" id="pecel-list" style="background-color:white; min-height: auto;">
     </div>
 </body>
 
 <script>
         $(document).ready(function () {
-            show_bucket();
+            show_pecel();
         });
-        function show_bucket() {
+        function show_pecel() {
             $.ajax({
                 type: "GET",
-                url: "/bucket",
+                url: "/pecel",
                 data: {},
                 success: function (response) {
-                    $('#bucket-list').empty();
-                    let rows = response['buckets'];
+                    $('#pecel-list').empty();
+                    let rows = response['pecels'];
                     for (let i = 0; i < rows.length; i++) {
-                        let bucket = rows[i]['bucket'];
+                        let pecel = rows[i]['pecel'];
                         let num = rows[i]['num'];
                         let done = rows[i]['done'];
                         let temp_html = '';
                         if (done === 0) {
                             temp_html = `
                             <li>
-                                <h2>📌 ${bucket}</h2>
-                                <button onclick="done_bucket(${num})" type="button" class="btn btn-outline-danger">-</button>
-                                <h5 class="mx-3">1</h5>
-                                <button onclick="done_bucket(${num})" type="button" class="btn btn-outline-primary">+</button>
+                                <h2>📌 ${pecel}</h2>
+                                <button onclick="done_pecel(${num})" type="button" class="btn btn-outline-danger mx-3">-</button>
+                                <h5>1</h5>
+                                <button onclick="done_pecel(${num})" type="button" class="btn btn-outline-primary mx-3">+</button>
+                                <button onclick="delete_pecel(${num})" type="button" class="btn btn-danger">Delete</button>
                             </li>
                             `;
                         } else {
                             temp_html = `
                             <li>
-                                <h2 class="done">✅ ${bucket}</h2>
-                                <button onclick="cancel_bucket(${num})" type="button" class="btn btn-outline-danger">Cancel</button>
+                                <h2 class="done">✅ ${pecel}</h2>
+                                <button onclick="cancel_pecel(${num})" type="button" class="btn btn-outline-danger">Cancel</button>
                             </li>
                             `;
                         }
-                        $('#bucket-list').append(temp_html);
+                        $('#pecel-list').append(temp_html);
                     }
                 }
             });
         }
-        function save_bucket() {
-            let bucket = $('#bucket').val();
+        function save_pecel() {
+            let pecel = $('#pecel').val();
             $.ajax({
                 type: "POST",
-                url: "/bucket",
-                data: {bucket_give: bucket},
+                url: "/pecel",
+                data: {pecel_give: pecel},
                 success: function (response) {
-                    $('#bucket').val(null);
-                    show_bucket();
+                    $('#pecel').val(null);
+                    show_pecel();
                 }
             });
         }
-        function done_bucket(num) {
+        function done_pecel(num) {
             $.ajax({
                 type: "POST",
-                url: "/bucket/done",
+                url: "/pecel/done",
                 data: { num_give: num },
                 success: function (response) {
-                    show_bucket();
+                    show_pecel();
                 }
             });
         }
-        function cancel_bucket(num) {
+        function cancel_pecel(num) {
             $.ajax({
                 type: "POST",
-                url: "/bucket/cancel",
+                url: "/pecel/cancel",
                 data: { num_give: num },
                 success: function (response) {
-                    show_bucket();
+                    show_pecel();
                 }
             });
         }
-        function delete_bucket(num) {
+        function delete_pecel(num) {
             $.ajax({
                 type: "POST",
                 url: "/delete",
                 data: { num_give: num },
                 success: function (response) {
-                    show_bucket();
+                    show_pecel();
                 }
             });
         }
