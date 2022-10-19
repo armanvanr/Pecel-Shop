@@ -23,6 +23,7 @@ def bucket_post():
         'num': num,
         'bucket': bucket_receive,
         'done': 0,
+        'qty': 1
     }
     db.bucket.insert_one(doc)
     return jsonify()
