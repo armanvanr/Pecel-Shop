@@ -21,6 +21,18 @@ waitress-serve --listen=*:5000 wsgi:app
 
 project bisa dibuka di [http://localhost:5000][localhost]
 
+## Alur deploy heroku
+Saat proses deploy heroku akan otomatis menginstall dependency yang ada di file `requirements.txt` dan kemudian menjalankan perintah yang ada di file `Procfile`
+
+## Error saat deploy
+Apabila ada pesan error `Your account has reached its concurrent builds limit.`
+
+bisa merestart menggungkan perintah heroku CLI
+```sh
+heroku restart
+```
+kemudian deploy ulang.
+
 ## License
 
 MIT
