@@ -100,8 +100,17 @@
         <p>"Laughter is brightest in the place where food is good." - Irish Proverb</p>
     </div>
     <div class="mybox" style="background-color:white">
-        <div class="mybucket">
-            <input id="bucket" class="form-control" type="text" placeholder="Enter your order here!">
+        <div class="mybucket mr-3">
+            <!-- <input id="bucket" class="form-control" type="text" placeholder="Enter your order here!"> -->
+            <select class="form-select mr-3" id="bucket">
+                <option selected>Select your food item</option>
+                <option value="Rice">Rice</option>
+                <option value="Lontong">Lontong</option>
+                <option value="Pecel">Pecel</option>
+                <option value="Fried Tempe">Fried Tempe</option>
+                <option value="Fried Tofu">Fried Tofu</option>
+                <option value="Fried Chicken">Fried Chicken</option>
+            </select>
             <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">Make order</button>
         </div>
     </div>
