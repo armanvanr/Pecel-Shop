@@ -1,0 +1,2 @@
+web: python -m venv venv
+web: waitress-serve --listen=*:5000 wsgi:app
