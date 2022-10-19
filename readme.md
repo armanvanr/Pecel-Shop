@@ -11,15 +11,30 @@ Perintah diatas digunakan untuk menginstall semua dependency yang dibutuhkan pro
 
 Linux :
 ```sh
+python3 -m venv venv
 gunicorn wsgi:app
 ```
 
 Windows :
 ```sh
+python -m venv venv
 waitress-serve --listen=*:5000 wsgi:app
 ```
 
 project bisa dibuka di [http://localhost:5000][localhost]
+
+## Deploy local menggunakan heroku
+Pastikan sudah menginstall heroku CLI. Kemudian jalankan perintah
+
+Linux :
+```sh
+heroku local
+```
+
+Windows :
+```sh
+heroku local -f Procfile.windows
+```
 
 ## Alur deploy heroku
 Saat proses deploy heroku akan otomatis menginstall dependency yang ada di file `requirements.txt` dan kemudian menjalankan perintah yang ada di file `Procfile`
