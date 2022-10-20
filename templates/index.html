@@ -17,6 +17,7 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <title>Pecel Shop</title>
 
@@ -26,19 +27,18 @@
         }
 
         body {
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-            url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGz6SzBS40ReTIp-kjFVaW-DiOaxCtTF3NitiSSiR4N2Y4L-T7ZupoKEVFnSs-OzThTGo&usqp=CAU');
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGz6SzBS40ReTIp-kjFVaW-DiOaxCtTF3NitiSSiR4N2Y4L-T7ZupoKEVFnSs-OzThTGo&usqp=CAU');
             background-position: center;
             background-size: cover;
-            no-repeat;
+            /* no-repeat; */
         }
 
         .mypic {
             width: 100%;
-            height: 350px;
+            height: 150px;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-            url('https://t3.ftcdn.net/jpg/02/13/44/22/360_F_213442298_KVPfVWFT7kKnBYtK3tfPeZUor51BQaoa.jpg');
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://t3.ftcdn.net/jpg/02/13/44/22/360_F_213442298_KVPfVWFT7kKnBYtK3tfPeZUor51BQaoa.jpg');
             background-position: center;
             background-size: cover;
 
@@ -67,11 +67,16 @@
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-        }
-
-        .mypecel>input {
             width: 70%;
         }
+
+        /* .mypecel>input {
+            width: 70%;
+        }
+
+        .mypecel>textarea {
+            width: 75%;
+        } */
 
         .mybox>li {
             display: flex;
@@ -97,7 +102,7 @@
     </style>
 </head>
 
-<body style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGz6SzBS40ReTIp-kjFVaW-DiOaxCtTF3NitiSSiR4N2Y4L-T7ZupoKEVFnSs-OzThTGo&usqp=CAU')">
+<body class="body">
     <div class="mypic">
         <h1>Pecel Shop</h1>
         <p>"Laughter is brightest in the place where food is good." - Irish Proverb</p>
@@ -116,9 +121,15 @@
                     <option value="Fried Chicken">Fried Chicken</option>
                 </select>
             </div>
-            <div class="col-3">    
-                <button onclick="save_pecel()" type="button" class="btn btn-outline-primary float-end">Make order</button>
+            <div class="col-3">
+                <button onclick="save_pecel()" type="button" class="btn btn-outline-primary float-end">Make
+                    order</button>
             </div>
+            <div class="mypecel">
+                <textarea class="form-control" placeholder="Notes, e.g.: without soybeans" id="notes"></textarea>
+
+            </div>
+
         </div>
     </div>
     <div class="mybox" id="pecel-list" style="background-color:white; min-height: auto;">
@@ -126,143 +137,147 @@
 </body>
 
 <script>
-        $(document).ready(function () {
-            show_pecel();
-        });
-        function show_pecel() {
-            $.ajax({
-                type: "GET",
-                url: "/pecel",
-                data: {},
-                success: function (response) {
-                    $('#pecel-list').empty();
-                    let rows = response['pecels'];
-                    for (let i = 0; i < rows.length; i++) {
-                        let pecel = rows[i]['pecel'];
-                        let num = rows[i]['num'];
-                        let done = rows[i]['done'];
-                        let temp_html = '';
-                        if (done === 0) {
-                            temp_html = `
+    $(document).ready(function () {
+        show_pecel();
+    });
+    function show_pecel() {
+        $.ajax({
+            type: "GET",
+            url: "/pecel",
+            data: {},
+            success: function (response) {
+                $('#pecel-list').empty();
+                let rows = response['pecels'];
+                for (let i = 0; i < rows.length; i++) {
+                    let pecel = rows[i]['pecel'];
+                    let num = rows[i]['num'];
+                    let done = rows[i]['done'];
+                    let notes = rows[i]['notes'];
+                    let temp_html = '';
+                    if (done === 0) {
+                        temp_html = `
                             <li>
                                 <h2>📌 ${pecel}</h2>
+                                <h6>Notes: ${notes}</h6>
                                 <button onclick="done_pecel(${num})" type="button" class="btn btn-outline-danger mx-3">-</button>
                                 <h5>1</h5>
                                 <button onclick="done_pecel(${num})" type="button" class="btn btn-outline-primary mx-3">+</button>
                                 <button onclick="delete_pecel(${num})" type="button" class="btn btn-danger">Delete</button>
                             </li>
-                            `;
-                        } else {
-                            temp_html = `
+                            <button onclick="create_order(5)" type="button" class="btn btn-danger">Create Order</button>`;
+                    } else {
+                        temp_html = `
                             <li>
                                 <h2 class="done">✅ ${pecel}</h2>
                                 <button onclick="cancel_pecel(${num})" type="button" class="btn btn-outline-danger">Cancel</button>
                             </li>
                             `;
-                        }
-                        $('#pecel-list').append(temp_html);
                     }
+                    $('#pecel-list').append(temp_html);
                 }
-            });
-        }
-        function save_pecel() {
-            let pecel = $('#pecel').val();
-            $.ajax({
-                type: "POST",
-                url: "/pecel",
-                data: {pecel_give: pecel},
-                success: function (response) {
-                    $('#pecel').val(null);
-                    show_pecel();
-                }
-            });
-        }
-        function done_pecel(num) {
-            $.ajax({
-                type: "POST",
-                url: "/pecel/done",
-                data: { num_give: num },
-                success: function (response) {
-                    show_pecel();
-                }
-            });
-        }
-        function cancel_pecel(num) {
-            $.ajax({
-                type: "POST",
-                url: "/pecel/cancel",
-                data: { num_give: num },
-                success: function (response) {
-                    show_pecel();
-                }
-            });
-        }
-        function delete_pecel(num) {
-            $.ajax({
-                type: "POST",
-                url: "/delete",
-                data: { num_give: num },
-                success: function (response) {
-                    show_pecel();
-                }
-            });
-        }
-        var quantity = 0;
-        $('.quantity-right-plus').click(function (e) {
-    
-            // Stop acting like a button
-            e.preventDefault();
-            // Get the field name
-            var quantity = parseInt($('#quantity').val());
-    
-            // If is not undefined
-    
-            $('#quantity').val(quantity + 1);
-    
-    
-            // Increment
-    
-        });
-    
-        $('.quantity-left-minus').click(function (e) {
-            // Stop acting like a button
-            e.preventDefault();
-            // Get the field name
-            var quantity = parseInt($('#quantity').val());
-    
-            // If is not undefined
-    
-            // Increment
-            if (quantity > 0) {
-                $('#quantity').val(quantity - 1);
             }
         });
-    </script>
-</head>
+    }
+    function save_pecel() {
+        let pecel = $('#pecel').val();
+        let notes = $('#notes').val();
+        $.ajax({
+            type: "POST",
+            url: "/pecel",
+            data: {
+                pecel_give: pecel,
+                notes_give: notes
+            },
+            success: function (response) {
+                $('#pecel').val(null);
+                $('#notes').val();
+                show_pecel();
+            }
+        });
+    }
+    function done_pecel(num) {
+        $.ajax({
+            type: "POST",
+            url: "/pecel/done",
+            data: { num_give: num },
+            success: function (response) {
+                show_pecel();
+            }
+        });
+    }
+    function cancel_pecel(num) {
+        $.ajax({
+            type: "POST",
+            url: "/pecel/cancel",
+            data: { num_give: num },
+            success: function (response) {
+                show_pecel();
+            }
+        });
+    }
+    function delete_pecel(num) {
+        $.ajax({
+            type: "POST",
+            url: "/delete",
+            data: { num_give: num },
+            success: function (response) {
+                show_pecel();
+            }
+        });
+    }
+    function done_pecel(num) {
+        $.ajax({
+            type: "POST",
+            url: "/pecel/done",
+            data: { num_give: num },
+            success: function (response) {
+                show_pecel();
+            }
+        });
+    }
 
-<body style="background-color:#00031b">
-    <div class="mypic">
-        <h1>My Bucketlist</h1>
-        <p>I write here downside for my bucket-list in my future. Hope this is will come true :)</p>
-    </div>
-    <div class="mybox" style="background-color:white">
-        <div class="mybucket">
-            <select class="form-select" id="bucket">
-                <option selected>Select your food item</option>
-                <option value="Rice">Rice</option>
-                <option value="Lontong">Lontong</option>
-                <option value="Pecel">Pecel</option>
-                <option value="Fried Tempe">Fried Tempe</option>
-                <option value="Fried Tofu">Fried Tofu</option>
-                <option value="Fried Chicken">Fried Chicken</option>
-            </select>
-            <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">Save</button>
-        </div>
-    </div>
-    <div class="mybox" id="bucket-list" style="background-color:white; min-height: auto;">
-    </div>
-</body>
+    function create_order(num) {
+        $.ajax({
+            type: "POST",
+            url: "/pecel/create",
+            data: { sameple_give: 'data' },
+            success: function (response) {
+                alert(response["msg"])
+            }
+        });
+    }
+
+    var quantity = 0;
+    $('.quantity-right-plus').click(function (e) {
+
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        var quantity = parseInt($('#quantity').val());
+
+        // If is not undefined
+
+        $('#quantity').val(quantity + 1);
 
 
+        // Increment
+
+    });
+
+    $('.quantity-left-minus').click(function (e) {
+        // Stop acting like a button
+        e.preventDefault();
+        // Get the field name
+        var quantity = parseInt($('#quantity').val());
+
+        // If is not undefined
+
+        // Increment
+        if (quantity > 0) {
+            $('#quantity').val(quantity - 1);
+        }
+    });
+
+</script>
 
 </html>
