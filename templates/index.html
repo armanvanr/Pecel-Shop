@@ -234,15 +234,6 @@
     }
     
     function create_order() {
-        // $.ajax({
-        //     type: "POST",
-        //     url: "/delete_all",
-        //     data: { num_give: num },
-        //     success: function (response) {
-        //         alert(response["msg"]);
-        //         window.location.reload();
-        //     }
-        // });
         let total = 0;
         $.ajax({
             type: "GET",
@@ -264,9 +255,7 @@
                     button: false
                 });
             }
-        });
-        
-            
+        });        
     }
 
     function increaseCount(a, b, id_menu) {

@@ -38,8 +38,8 @@ def pecel_done():
     )
     return jsonify()
 
-@app.route("/pecel//cancel", methods=["POST"])
-def cancel_pecel():
+@app.route("/pecel/add", methods=["POST"])
+def add():
     num_receive = request.form['num_give']
     db.pecel.update_one(
         {'num': int(num_receive)},
