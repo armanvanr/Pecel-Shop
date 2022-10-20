@@ -11,51 +11,50 @@ app = Flask(__name__)
 def home():
    return render_template('index.html')
 
-@app.route("/bucket", methods=["POST"])
-def bucket_post():
-    # sample_receive = request.form['sample_give']
-    bucket_receive = request.form['bucket_give']
+@app.route("/pecel", methods=["POST"])
+def pecel_post():
+    pecel_receive = request.form['pecel_give']
 
-    count = db.bucket.count_documents({})
+    count = db.pecel.count_documents({})
     num = count + 1
 
     doc = {
         'num': num,
-        'bucket': bucket_receive,
+        'pecel': pecel_receive,
         'done': 0,
         'qty': 1
     }
-    db.bucket.insert_one(doc)
+    db.pecel.insert_one(doc)
     return jsonify()
 
-@app.route("/bucket/done", methods=["POST"])
-def bucket_done():
+@app.route("/pecel/done", methods=["POST"])
+def pecel_done():
     num_receive = request.form['num_give']
-    db.bucket.update_one(
+    db.pecel.update_one(
         {'num': int(num_receive)},
         {'$set': {'done': 1}}
     )
     return jsonify()
 
-@app.route("/bucket//cancel", methods=["POST"])
-def cancel_bucket():
+@app.route("/pecel//cancel", methods=["POST"])
+def cancel_pecel():
     num_receive = request.form['num_give']
-    db.bucket.update_one(
+    db.pecel.update_one(
         {'num': int(num_receive)},
         {'$set': {'done': 0}}
     )
     return jsonify()
 
 @app.route("/delete", methods=["POST"])
-def delete_bucket():
+def delete_pecel():
     num_receive = request.form['num_give']
-    db.bucket.delete_one({'num': int(num_receive)})
+    db.pecel.delete_one({'num': int(num_receive)})
     return jsonify()
 
-@app.route("/bucket", methods=["GET"])
-def bucket_get():
-    buckets_list = list(db.bucket.find({}, {'_id': False}))
-    return jsonify({'buckets': buckets_list})
+@app.route("/pecel", methods=["GET"])
+def pecel_get():
+    pecels_list = list(db.pecel.find({}, {'_id': False}))
+    return jsonify({'pecels': pecels_list})
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)

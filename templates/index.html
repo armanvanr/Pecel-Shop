@@ -18,20 +18,28 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-    <title>Bucket List</title>
+    <title>Pecel Shop</title>
 
     <style>
         * {
             font-family: 'Gowun Dodum', sans-serif;
         }
 
+        body {
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+            url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGz6SzBS40ReTIp-kjFVaW-DiOaxCtTF3NitiSSiR4N2Y4L-T7ZupoKEVFnSs-OzThTGo&usqp=CAU');
+            background-position: center;
+            background-size: cover;
+            no-repeat;
+        }
+
         .mypic {
             width: 100%;
             height: 350px;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-                url('https://images.ctfassets.net/cnu0m8re1exe/52MFJVkqEMCiNdAVqYBHZ/7b26a05b4a8cddf7a9f70d5f168f90de/shutterstock_1520037971.jpg');
-            background-position: center 60%;
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+            url('https://t3.ftcdn.net/jpg/02/13/44/22/360_F_213442298_KVPfVWFT7kKnBYtK3tfPeZUor51BQaoa.jpg');
+            background-position: center;
             background-size: cover;
 
             color: white;
@@ -54,14 +62,14 @@
             margin: 20px auto;
         }
 
-        .mybucket {
+        .mypecel {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
         }
 
-        .mybucket>input {
+        .mypecel>input {
             width: 70%;
         }
 
@@ -87,98 +95,115 @@
             text-decoration: line-through
         }
     </style>
-    <script>
+</head>
+
+<body style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGz6SzBS40ReTIp-kjFVaW-DiOaxCtTF3NitiSSiR4N2Y4L-T7ZupoKEVFnSs-OzThTGo&usqp=CAU')">
+    <div class="mypic">
+        <h1>Pecel Shop</h1>
+        <p>"Laughter is brightest in the place where food is good." - Irish Proverb</p>
+    </div>
+    <div class="mybox" style="background-color:white">
+        <div class="row">
+            <div class="mypecel col-9">
+                <!-- <input id="pecel" class="form-control" type="text" placeholder="Enter your order here!"> -->
+                <select class="form-select" id="pecel">
+                    <option selected>Select your food item</option>
+                    <option value="Rice">Rice</option>
+                    <option value="Lontong">Lontong</option>
+                    <option value="Pecel">Pecel</option>
+                    <option value="Fried Tempe">Fried Tempe</option>
+                    <option value="Fried Tofu">Fried Tofu</option>
+                    <option value="Fried Chicken">Fried Chicken</option>
+                </select>
+            </div>
+            <div class="col-3">    
+                <button onclick="save_pecel()" type="button" class="btn btn-outline-primary float-end">Make order</button>
+            </div>
+        </div>
+    </div>
+    <div class="mybox" id="pecel-list" style="background-color:white; min-height: auto;">
+    </div>
+</body>
+
+<script>
         $(document).ready(function () {
-            show_bucket();
+            show_pecel();
         });
-        function show_bucket() {
+        function show_pecel() {
             $.ajax({
                 type: "GET",
-                url: "/bucket",
+                url: "/pecel",
                 data: {},
                 success: function (response) {
-                    $('#bucket-list').empty();
-                    let rows = response['buckets'];
+                    $('#pecel-list').empty();
+                    let rows = response['pecels'];
                     for (let i = 0; i < rows.length; i++) {
-                        let bucket = rows[i]['bucket'];
+                        let pecel = rows[i]['pecel'];
                         let num = rows[i]['num'];
                         let done = rows[i]['done'];
                         let temp_html = '';
                         if (done === 0) {
                             temp_html = `
-                                <li>
-                                    <h2>${bucket}</h2>
-                                    <button onclick="delete_bucket(${num})" type="button" class="btn btn-outline-danger">Delete!</button>
-                                    <div class="col-lg-2">
-                                            <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="minus" data-field="">
-                                              <span class="glyphicon glyphicon-minus"></span>
-                                            </button>
-                                        </span>
-                                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="10" min="1" max="100">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
-                                                <span class="glyphicon glyphicon-plus"></span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                    </div>
-                                </li>
-                                `;
+                            <li>
+                                <h2>📌 ${pecel}</h2>
+                                <button onclick="done_pecel(${num})" type="button" class="btn btn-outline-danger mx-3">-</button>
+                                <h5>1</h5>
+                                <button onclick="done_pecel(${num})" type="button" class="btn btn-outline-primary mx-3">+</button>
+                                <button onclick="delete_pecel(${num})" type="button" class="btn btn-danger">Delete</button>
+                            </li>
+                            `;
                         } else {
                             temp_html = `
-                                <li>
-                                    <h2 class="done">${bucket}</h2>
-                                    <button onclick="delete_bucket(${num})" type="button" class="btn btn-outline-danger">Delete!</button>
-                                </li>
-                                `;
+                            <li>
+                                <h2 class="done">✅ ${pecel}</h2>
+                                <button onclick="cancel_pecel(${num})" type="button" class="btn btn-outline-danger">Cancel</button>
+                            </li>
+                            `;
                         }
-                        $('#bucket-list').append(temp_html);
+                        $('#pecel-list').append(temp_html);
                     }
                 }
             });
         }
-        function save_bucket() {
-            let bucket = $('#bucket').val();
+        function save_pecel() {
+            let pecel = $('#pecel').val();
             $.ajax({
                 type: "POST",
-                url: "/bucket",
-                data: { bucket_give: bucket },
+                url: "/pecel",
+                data: {pecel_give: pecel},
                 success: function (response) {
-                    $('#bucket').val(null);
-                    show_bucket();
+                    $('#pecel').val(null);
+                    show_pecel();
                 }
             });
         }
-        function done_bucket(num) {
+        function done_pecel(num) {
             $.ajax({
                 type: "POST",
-                url: "/bucket/done",
+                url: "/pecel/done",
                 data: { num_give: num },
                 success: function (response) {
-                    show_bucket();
+                    show_pecel();
                 }
             });
         }
-        function cancel_bucket(num) {
+        function cancel_pecel(num) {
             $.ajax({
                 type: "POST",
-                url: "/bucket/cancel",
+                url: "/pecel/cancel",
                 data: { num_give: num },
                 success: function (response) {
-                    show_bucket();
-                    window.location.reload();
+                    show_pecel();
                 }
             });
         }
-        function delete_bucket(num) {
+        function delete_pecel(num) {
             $.ajax({
                 type: "POST",
                 url: "/delete",
                 data: { num_give: num },
                 success: function (response) {
-                    show_bucket();
+                    show_pecel();
                 }
             });
         }
