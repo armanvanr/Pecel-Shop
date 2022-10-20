@@ -245,7 +245,6 @@
                     let pecel = rows[i]['pecel'];
                     let num = rows[i]['num'];
                     total += parseInt($(`[id='totalprice_${pecel}']`).val());
-                    console.log(total)
                     delete_pecel(num);
                 }
                 swal({
@@ -255,7 +254,9 @@
                     button: false
                 });
             }
-        });        
+        });
+        
+            
     }
 
     function increaseCount(a, b, id_menu) {

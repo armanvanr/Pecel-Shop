@@ -13,8 +13,9 @@ def home():
 
 @app.route("/pecel", methods=["POST"])
 def pecel_post():
+    # sample_receive = request.form['sample_give']
     pecel_receive = request.form['pecel_give']
-    notes_receive = request.form['notes_give']
+
     count = db.pecel.count_documents({})
     num = count + 1
 
@@ -22,12 +23,9 @@ def pecel_post():
         'num': num,
         'pecel': pecel_receive,
         'done': 0,
-        'qty': 1,
-        'notes': notes_receive
-        
     }
     db.pecel.insert_one(doc)
-    return jsonify()
+    return jsonify({'msg': 'Order Success!'})
 
 @app.route("/pecel/done", methods=["POST"])
 def pecel_done():
@@ -38,8 +36,8 @@ def pecel_done():
     )
     return jsonify()
 
-@app.route("/pecel/add", methods=["POST"])
-def add():
+@app.route("/pecel/cancel", methods=["POST"])
+def cancel_pecel():
     num_receive = request.form['num_give']
     db.pecel.update_one(
         {'num': int(num_receive)},
