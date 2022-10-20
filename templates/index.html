@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
 
+<html class="no-js">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pecel Shop</title>
+
+    <!-- meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -13,128 +16,203 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&amp;display=swap" rel="stylesheet">
+    <!-- css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
-    <title>Pecel Shop</title>
-
-    <style>
-        * {
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-
-        .mypic {
-            width: 100%;
-            height: 350px;
-
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-            url('https://www.masakapahariini.com/wp-content/uploads/2021/10/Nasi-Pecel-Madiun-780x440.jpg');
-            background-position: center 60%;
-            background-size: cover;
-
-            color: white;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mypic>h1 {
-            font-size: 30px;
-        }
-
-        .mybox {
-            width: 95%;
-            max-width: 700px;
-            padding: 20px;
-            box-shadow: 0px 0px 10px 0px lightblue;
-            margin: 20px auto;
-        }
-
-        .mypecel {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .mypecel>input {
-            width: 70%;
-        }
-
-        .mybox>li {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-
-            margin-bottom: 10px;
-            min-height: 48px;
-        }
-
-        .mybox>li>h2 {
-            max-width: 75%;
-            font-size: 20px;
-            font-weight: 500;
-            margin-right: auto;
-            margin-bottom: 0px;
-        }
-
-        .mybox>li>h2.done {
-            text-decoration: line-through
-        }
-    </style>
+    <!-- google font -->
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Kreon:300,400,700'>
+    
+    <!-- js -->
+    <script src="{{ url_for('static', filename='js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
-<body style="background-color:#00031b">
-    <div class="mypic">
-        <h1>Pecel Shop</h1>
-        <p>I write here downside for my pecel-list in my future. Hope this is will come true :)</p>
-    </div>
-    <div class="mybox" style="background-color:white">
-        <div class="row">
-            <div class="mypecel col-9">
-                <select class="form-select" id="pecel">
-                    <option selected disabled>Select your food item</option>
-                    <option id="Nasi Pecel" value="Nasi Pecel">Nasi Pecel</option>
-                    <option id="Fried Chicken" value="Fried Chicken">Fried Chicken</option>
-                    <option id="Fried Tempeh" value="Fried Tempeh">Fried Tempeh</option>
-                    <option id="Fried Tofu" value="Fried Tofu">Fried Tofu</option>
-                    <option id="Fried Egg" value="Fried Egg">Fried Egg</option>
-                    <option id="Ice Tea" value="Ice Tea">Ice Tea</option>
-                    <option id="Orange Juice" value="Orange Juice">Orange Juice</option>
-                    <option id="Coconut Water" value="Coconut Water">Coconut Water</option>
-                </select>
+<style>
+    .mybox {
+        width: 95%;
+        max-width: 700px;
+        padding: 20px;
+        box-shadow: 0px 0px 10px 0px lightblue;
+        margin: 20px auto;
+    }
+
+    .mybucket {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .mybucket>input {
+        width: 70%;
+    }
+
+    .mybox>li {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        min-height: 48px;
+    }
+
+    .mybox>li>h2 {
+        max-width: 75%;
+        font-size: 20px;
+        font-weight: 500;
+        margin-right: auto;
+        margin-bottom: 0px;
+    }
+
+    .mybox>li>h2.done {
+        text-decoration: line-through
+    }
+</style>
+
+<body data-spy="scroll" data-target="#navbar" data-offset="120" >
+    <div id="header">
+        <div class="bg-overlay"></div>
+        <div class="center text-center">
+            <div class="banner">
+                <h1 class="">Pecel Shop</h1>
             </div>
-            <div class="col-3">
-                <button onclick="save_pecel()" type="button" class="btn btn-outline-primary float-end">
-                    Add menu
-                </button>
-            </div>
+            <div class="subtitle"><h4>Using natural ingredients with traditional peanut sauce.</h4></div>
+        </div>
+        <div class="bottom text-center">
+            <a id="scrollDownArrow" href="#"><i class="fa fa-chevron-down"></i></a>
         </div>
     </div>
-    <div class="mybox" style="background-color:white; min-height: auto;">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th width="5%">#</th>
-                    <th width="30%">Name of menu</th>
-                    <th width="25%">Price</th>
-                    <th class="text-center" width="25%">Quantity</th>
-                    <th class="text-center" width="15%"></th>
-                </tr>
-            </thead>
-        </table>
-        <div id="pecel-list"></div>
-    </div>
-    <div class="d-flex justify-content-center mb-5">
-        <button onclick="create_order()" type="button" class="btn btn-success">Make Order!</button>
-    </div>
-    
+    <!-- /#header -->
+
+    <div id="food-menu" class="light-wrapper">
+        <section class="ss-style-top"></section>
+        <div class="container inner">
+            <h2 class="section-title text-center">Pecel Shop Menu</h2>
+            <p class="lead main text-center">There is no sincerer love than the love of food!</p>
+
+            <div class="row">
+                <div class="col-sm-3 col-md-3">
+                    <div class="menu-images"><img src="{{ url_for('static', filename='img/menu/nasi pecel.jpeg') }}" alt="Nasi Pecel"></div>
+                    <div class="menu-titles"><h1 class="">Nasi Pecel</h1><h4 class="text-center">Rp 20.000,-</h4></div>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <div class="menu-images "><img src="{{ url_for('static', filename='img/menu/ayam goreng.jpeg') }}" alt="Fried Chicken"></div>
+                    <div class="menu-titles"><h1 class="">Fried Chicken</h1><h4 class="text-center">Rp 10.000,-</h4></div>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <div class="menu-images "><img src="{{ url_for('static', filename='img/menu/tempe.jpg') }}" alt="Tempe"></div>
+                    <div class="menu-titles"><h1 class="">Tempe</h1><h4 class="text-center">Rp 2.000,-</h4></div>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <div class="menu-images "><img src="{{ url_for('static', filename='img/menu/tahu.jpg') }}" alt="Tahu"></div>
+                    <div class="menu-titles"><h1 class="">Tahu (Tofu)</h1><h4 class="text-center">Rp 2.000,-</h4></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 col-md-3">
+                    <div class="menu-images"><img src="{{ url_for('static', filename='img/menu/telur.jpg') }}" alt="Telur"></div>
+                    <div class="menu-titles"><h1 class="">Fried Egg</h1><h4 class="text-center">Rp 5.000,-</h4></div>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <div class="menu-images"><img src="{{ url_for('static', filename='img/menu/es teh.jpg') }}" alt="Es Teh"></div>
+                    <div class="menu-titles"><h1 class="">Ice Tea</h1><h4 class="text-center">Rp 4.000,-</h4></div>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <div class="menu-images "><img src="{{ url_for('static', filename='img/menu/es jeruk.jpg') }}" alt="Es Jeruk"></div>
+                    <div class="menu-titles"><h1 class="">Ice Orange</h1><h4 class="text-center">Rp 4.000,-</h4></div>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <div class="menu-images "><img src="{{ url_for('static', filename='img/menu/es degan.jpg') }}" alt="Es Degan"></div>
+                    <div class="menu-titles"><h1 class="">Coconut Water</h1><h4 class="text-center">Rp 7.000,-</h4></div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+        <section class="ss-style-bottom"></section>
+    </div><!--/#food-menu-->
+
+    <div id="order" class="parallax pricing">
+        <section class="ss-style-top"></section>
+        <div class="container inner">
+            <h2 class="section-title text-center">Order Cart</h2>
+            <p class="lead main text-center">Add food that you want to order</p>
+            <div class="mybox" style="background-color:white">
+                <div class="row">
+                    <div class="mypecel col-9">
+                        <select class="form-select" id="pecel" style="font-size: 15px;">
+                            <option selected disabled>Select your food item</option>
+                            <option id="Nasi Pecel" value="Nasi Pecel">Nasi Pecel</option>
+                            <option id="Fried Chicken" value="Fried Chicken">Fried Chicken</option>
+                            <option id="Fried Tempeh" value="Fried Tempeh">Fried Tempeh</option>
+                            <option id="Fried Tofu" value="Fried Tofu">Fried Tofu</option>
+                            <option id="Fried Egg" value="Fried Egg">Fried Egg</option>
+                            <option id="Ice Tea" value="Ice Tea">Ice Tea</option>
+                            <option id="Orange Juice" value="Orange Juice">Orange Juice</option>
+                            <option id="Coconut Water" value="Coconut Water">Coconut Water</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <button onclick="save_pecel()" type="button" class="btn btn-primary float-end">
+                            Add menu
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="mybox" style="background-color:white; min-height: auto;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="5%">#</th>
+                            <th width="30%">Name of menu</th>
+                            <th width="25%">Price</th>
+                            <th class="text-center" width="25%">Quantity</th>
+                            <th class="text-center" width="15%"></th>
+                        </tr>
+                    </thead>
+                </table>
+                <div id="pecel-list"></div>
+            </div>
+            <div class="d-flex justify-content-center mb-5">
+                <button onclick="create_order()" type="button" class="btn btn-success">Make Order!</button>
+            </div>
+            <!-- /.services --> 
+        </div>
+    </div><!-- #reservation -->
+
+    <footer id="footer" class="dark-wrapper">
+        <section class="ss-style-top"></section>
+        <div class="container inner">
+            <div class="row">
+                <div class="col-sm-6">
+                    &copy; Copyright MeatKing 2014
+                    <br/>Theme By <a class="themeBy" href="http://www.Themewagon.com">ThemeWagon</a>
+                </div>
+                <div class="col-sm-6">
+                    <div class="social-bar">
+                        <a href="#" class="fa fa-instagram tooltipped" title=""></a>
+                        <a href="#" class="fa fa-youtube-square tooltipped" title=""></a>
+                        <a href="#" class="fa fa-facebook-square tooltipped" title=""></a>
+                        <a href="#" class="fa fa-pinterest-square tooltipped" title=""></a>
+                        <a href="#" class="fa fa-google-plus-square tooltipped" title=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/jquery-2.1.3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.actual.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.scrollTo.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 
 <!-- Sweet Alert -->
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js') }}"></script>
 <script>
     var price  = [];
     price['Nasi Pecel'] = 20000;
