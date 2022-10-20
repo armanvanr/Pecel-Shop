@@ -14,10 +14,6 @@
         crossorigin="anonymous"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&amp;display=swap" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <title>Pecel Shop</title>
 
@@ -26,20 +22,13 @@
             font-family: 'Gowun Dodum', sans-serif;
         }
 
-        body {
-            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGz6SzBS40ReTIp-kjFVaW-DiOaxCtTF3NitiSSiR4N2Y4L-T7ZupoKEVFnSs-OzThTGo&usqp=CAU');
-            background-position: center;
-            background-size: cover;
-            /* no-repeat; */
-        }
-
         .mypic {
             width: 100%;
-            height: 150px;
+            height: 350px;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-                url('https://t3.ftcdn.net/jpg/02/13/44/22/360_F_213442298_KVPfVWFT7kKnBYtK3tfPeZUor51BQaoa.jpg');
-            background-position: center;
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+            url('https://www.masakapahariini.com/wp-content/uploads/2021/10/Nasi-Pecel-Madiun-780x440.jpg');
+            background-position: center 60%;
             background-size: cover;
 
             color: white;
@@ -56,7 +45,7 @@
 
         .mybox {
             width: 95%;
-            max-width: 400px;
+            max-width: 700px;
             padding: 20px;
             box-shadow: 0px 0px 10px 0px lightblue;
             margin: 20px auto;
@@ -67,16 +56,11 @@
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            width: 70%;
         }
 
-        /* .mypecel>input {
+        .mypecel>input {
             width: 70%;
         }
-
-        .mypecel>textarea {
-            width: 75%;
-        } */
 
         .mybox>li {
             display: flex;
@@ -85,7 +69,7 @@
             justify-content: center;
 
             margin-bottom: 10px;
-            min-height: 60px;
+            min-height: 48px;
         }
 
         .mybox>li>h2 {
@@ -102,44 +86,88 @@
     </style>
 </head>
 
-<body class="body">
+<body style="background-color:#00031b">
     <div class="mypic">
         <h1>Pecel Shop</h1>
-        <p>"Laughter is brightest in the place where food is good." - Irish Proverb</p>
+        <p>I write here downside for my pecel-list in my future. Hope this is will come true :)</p>
     </div>
     <div class="mybox" style="background-color:white">
         <div class="row">
             <div class="mypecel col-9">
-                <!-- <input id="pecel" class="form-control" type="text" placeholder="Enter your order here!"> -->
                 <select class="form-select" id="pecel">
-                    <option selected>Select your food item</option>
-                    <option value="Rice">Rice</option>
-                    <option value="Lontong">Lontong</option>
-                    <option value="Pecel">Pecel</option>
-                    <option value="Fried Tempe">Fried Tempe</option>
-                    <option value="Fried Tofu">Fried Tofu</option>
-                    <option value="Fried Chicken">Fried Chicken</option>
+                    <option selected disabled>Select your food item</option>
+                    <option id="Nasi Pecel" value="Nasi Pecel">Nasi Pecel</option>
+                    <option id="Fried Chicken" value="Fried Chicken">Fried Chicken</option>
+                    <option id="Fried Tempeh" value="Fried Tempeh">Fried Tempeh</option>
+                    <option id="Fried Tofu" value="Fried Tofu">Fried Tofu</option>
+                    <option id="Fried Egg" value="Fried Egg">Fried Egg</option>
+                    <option id="Ice Tea" value="Ice Tea">Ice Tea</option>
+                    <option id="Orange Juice" value="Orange Juice">Orange Juice</option>
+                    <option id="Coconut Water" value="Coconut Water">Coconut Water</option>
                 </select>
             </div>
             <div class="col-3">
-                <button onclick="save_pecel()" type="button" class="btn btn-outline-primary float-end">Make
-                    order</button>
+                <button onclick="save_pecel()" type="button" class="btn btn-outline-primary float-end">
+                    Add menu
+                </button>
             </div>
-            <div class="mypecel">
-                <textarea class="form-control" placeholder="Notes, e.g.: without soybeans" id="notes"></textarea>
-
-            </div>
-
         </div>
     </div>
-    <div class="mybox" id="pecel-list" style="background-color:white; min-height: auto;">
+    <div class="mybox" style="background-color:white; min-height: auto;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="5%">#</th>
+                    <th width="30%">Name of menu</th>
+                    <th width="25%">Price</th>
+                    <th class="text-center" width="25%">Quantity</th>
+                    <th class="text-center" width="15%"></th>
+                </tr>
+            </thead>
+        </table>
+        <div id="pecel-list"></div>
     </div>
+    <div class="d-flex justify-content-center mb-5">
+        <button onclick="create_order()" type="button" class="btn btn-success">Make Order!</button>
+    </div>
+    
 </body>
 
+<!-- Sweet Alert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
+    var price  = [];
+    price['Nasi Pecel'] = 20000;
+    price['Fried Chicken'] = 10000;
+    price['Fried Tempeh'] = 2000;
+    price['Fried Tofu'] = 2000;
+    price['Fried Egg'] = 5000;
+    price['Ice Tea'] = 4000;
+    price['Orange Juice'] = 4000;
+    price['Coconut Water'] = 7000;
+
+    // Format Rupiah
+    function formatRupiah(angka, prefix){
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+        split   		= number_string.split(','),
+        sisa     		= split[0].length % 3,
+        rupiah     		= split[0].substr(0, sisa),
+        ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if(ribuan){
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah + ',-' : '');
+    }
+
     $(document).ready(function () {
         show_pecel();
     });
+    
     function show_pecel() {
         $.ajax({
             type: "GET",
@@ -152,69 +180,48 @@
                     let pecel = rows[i]['pecel'];
                     let num = rows[i]['num'];
                     let done = rows[i]['done'];
-                    let notes = rows[i]['notes'];
-                    let temp_html = '';
-                    if (done === 0) {
-                        temp_html = `
-                            <li>
-                                <h2>📌 ${pecel}</h2>
-                                <h6>Notes: ${notes}</h6>
-                                <button onclick="done_pecel(${num})" type="button" class="btn btn-outline-danger mx-3">-</button>
-                                <h5>1</h5>
-                                <button onclick="done_pecel(${num})" type="button" class="btn btn-outline-primary mx-3">+</button>
-                                <button onclick="delete_pecel(${num})" type="button" class="btn btn-danger">Delete</button>
-                            </li>
-                            <button onclick="create_order(5)" type="button" class="btn btn-danger">Create Order</button>`;
-                    } else {
-                        temp_html = `
-                            <li>
-                                <h2 class="done">✅ ${pecel}</h2>
-                                <button onclick="cancel_pecel(${num})" type="button" class="btn btn-outline-danger">Cancel</button>
-                            </li>
-                            `;
-                    }
+                    let temp_html = 
+                        `<table class="table">
+                            <tbody>
+                                <tr>
+                                    <td width="5%"><li></li></td>
+                                    <td width="30%">${pecel}</td>
+                                    <td id="price_${pecel}" width="25%">${formatRupiah(price[pecel].toString(), '')}</td>
+                                    <td class="text-center" width="25%">
+                                        <button onClick="decreaseCount(event, this, '${pecel}')" type="button" class="btn btn-outline-danger mx-2">-</button>
+                                        <input id="total" type="text" value="1" class="col-2 text-center">
+                                        <button onClick="increaseCount(event, this, '${pecel}')" type="button" class="btn btn-outline-primary mx-2">+</button>
+                                        
+                                        <input id="totalprice_${pecel}" type="hidden" value="${price[pecel]}" class="col-2 text-center">
+                                    </td>
+                                    <td class="text-center" width="15%">
+                                        <button onclick="delete_pecel(${num})" type="button" class="btn btn-danger">Cancel</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>`;
+                        
+                        // Disable Input that already on Pecel-List with ID
+                        $(`[id='${pecel}']`).hide();
                     $('#pecel-list').append(temp_html);
                 }
             }
         });
     }
+    
     function save_pecel() {
         let pecel = $('#pecel').val();
-        let notes = $('#notes').val();
         $.ajax({
             type: "POST",
             url: "/pecel",
-            data: {
-                pecel_give: pecel,
-                notes_give: notes
-            },
+            data: {pecel_give: pecel},
             success: function (response) {
                 $('#pecel').val(null);
-                $('#notes').val();
                 show_pecel();
             }
         });
     }
-    function done_pecel(num) {
-        $.ajax({
-            type: "POST",
-            url: "/pecel/done",
-            data: { num_give: num },
-            success: function (response) {
-                show_pecel();
-            }
-        });
-    }
-    function cancel_pecel(num) {
-        $.ajax({
-            type: "POST",
-            url: "/pecel/cancel",
-            data: { num_give: num },
-            success: function (response) {
-                show_pecel();
-            }
-        });
-    }
+    
     function delete_pecel(num) {
         $.ajax({
             type: "POST",
@@ -225,59 +232,75 @@
             }
         });
     }
-    function done_pecel(num) {
+    
+    function create_order() {
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/delete_all",
+        //     data: { num_give: num },
+        //     success: function (response) {
+        //         alert(response["msg"]);
+        //         window.location.reload();
+        //     }
+        // });
+        let total = 0;
         $.ajax({
-            type: "POST",
-            url: "/pecel/done",
-            data: { num_give: num },
+            type: "GET",
+            url: "/pecel",
+            data: {},
             success: function (response) {
-                show_pecel();
+                let rows = response['pecels'];
+                for (let i = 0; i < rows.length; i++) {
+                    let pecel = rows[i]['pecel'];
+                    let num = rows[i]['num'];
+                    total += parseInt($(`[id='totalprice_${pecel}']`).val());
+                    console.log(total)
+                    delete_pecel(num);
+                }
+                swal({
+                    title: "Total Price!",
+                    text: `${total}`,
+                    icon: "success",
+                    button: false
+                });
             }
         });
+        
+            
     }
 
-    function create_order(num) {
-        $.ajax({
-            type: "POST",
-            url: "/pecel/create",
-            data: { sameple_give: 'data' },
-            success: function (response) {
-                alert(response["msg"])
-            }
-        });
+    function increaseCount(a, b, id_menu) {
+        var input = b.previousElementSibling;
+        var value = parseInt(input.value, 10);
+        value = isNaN(value) ? 0 : value;
+        value++;
+        input.value = value;
+        countPrice(value, id_menu);
     }
 
-    var quantity = 0;
-    $('.quantity-right-plus').click(function (e) {
-
-        // Stop acting like a button
-        e.preventDefault();
-        // Get the field name
-        var quantity = parseInt($('#quantity').val());
-
-        // If is not undefined
-
-        $('#quantity').val(quantity + 1);
-
-
-        // Increment
-
-    });
-
-    $('.quantity-left-minus').click(function (e) {
-        // Stop acting like a button
-        e.preventDefault();
-        // Get the field name
-        var quantity = parseInt($('#quantity').val());
-
-        // If is not undefined
-
-        // Increment
-        if (quantity > 0) {
-            $('#quantity').val(quantity - 1);
+    function decreaseCount(a, b, id_menu) {
+        var input = b.nextElementSibling;
+        var value = parseInt(input.value, 10);
+        if (value > 1) {
+            value = isNaN(value) ? 0 : value;
+            value--;
+            input.value = value;
         }
-    });
+        countPrice(value, id_menu);
+    }
 
+    function countPrice(value, id_menu){
+        // Initialize price from array IS value id-menu
+        var count_price  = price[id_menu];
+        // Count of the price
+        var total = parseInt(count_price) * parseInt(value);
+        // To show the price
+        $(`[id='price_${id_menu}']`).html(formatRupiah(total.toString(), ''));
+
+        // To show the Total price
+        $(`[id='totalprice_${id_menu}']`).html(total);
+    }
+    $('#pecel')
 </script>
 
 </html>
